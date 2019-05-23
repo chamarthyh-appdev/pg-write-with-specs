@@ -18,4 +18,38 @@ class PicturesController < ApplicationController
 
     render("pic_templates/details.html.erb")
   end
+  
+    def bbyyyyeeee
+    pic_id = params.fetch("id_to_remove")
+    photo = Photo.where({ :id => pic_id}).at(0)
+    photo.destroy
+    redirect_to("/popular")
+  end 
+  
+  def add_photo
+    @list_of_users = User.all.order({ :username => :asc})
+    render("pic_templates/new_photo.html.erb")
+  end 
+  
+  def save_new_row
+     new_row = Photo.new
+     new_row.caption = params.fetch("pic_caption")
+     new_row.image = params.fetch("pic_image_url")
+     new_row.owner_id = params.fetch("poster_id")
+     
+     new_row.save
+     redirect_to("/recent")
+  end 
+  
+  def edit_photo
+    pic_id = params.fetch("photo_id")
+    @picture = Photo.where({:id => pic_id}).at(0)
+    render("pic_templates/existing_photo_form.html.erb")
+  end 
+  
+  def save_old_row
+    
+    redirect_to("/photos/" + params.fetch("photo_id"))
+  end
+  
 end
